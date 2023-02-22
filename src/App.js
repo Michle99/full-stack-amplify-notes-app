@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "@aws-amplify/ui-react/styles.css";
 import './App.css';
-import { API } from "aws-amplify";
+import { API, Storage } from "aws-amplify";
 import {
   withAuthenticator,
   Button,
@@ -92,12 +92,7 @@ const App = ({ signOut }) => {
       <Heading level={1}>My Notes App</Heading>
       <View as="form" margin="3rem 0" onSubmit={createNote}>
         <Flex direction="row" justifyContent="center">
-          <View
-            name="image"
-            as="input"
-            type="file"
-            style={{ alignSelf: "end" }}
-          />
+          
           <TextField
             name="name"
             placeholder="Note name"
@@ -113,6 +108,12 @@ const App = ({ signOut }) => {
             labelHidden
             variation="quiet"
             required
+          />
+          <View
+            name="image"
+            as="input"
+            type="file"
+            style={{ alignSelf: "start" }}
           />
           <Button type="submit" variation="primary">
             Create Note
