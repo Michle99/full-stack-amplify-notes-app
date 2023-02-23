@@ -11,17 +11,19 @@ import {
   View,
   TextField,
   Text,
+  Divider,
+  Card,
+  useTheme
 } from "@aws-amplify/ui-react";
 import { listNotes } from "./graphql/queries";
 import {
   createNote as createNoteMutation,
   deleteNote as deleteNoteMutation,
-  updateNote as updateNoteMutation
 } from "./graphql/mutations";
 
 const App = ({ signOut }) => {
   const [notes, setNotes] = useState([]);
-  // const [isEditing, setEditing] = useState(false);
+  const { tokens } = useTheme();
 
   useEffect(() => {
     fetchNotes();
@@ -51,6 +53,7 @@ const App = ({ signOut }) => {
       description: form.get("description"),
       image: image.name,
     };
+    console.log("data: ", data);
     if (!!data.image) await Storage.put(data.name, image);
     await API.graphql({
       query: createNoteMutation,
@@ -70,22 +73,6 @@ const App = ({ signOut }) => {
     });
   }
 
-  // async function updateNote(event, id) {
-  //   event.preventDefault();
-  //   const updateNotes = notes.filter((note) => note.id === id);
-  //   setNotes(updateNotes);
-  //   const form = new FormData(event.target);
-  //   const data = {
-  //     name: form.get("name"),
-  //     description: form.get("decription"),
-  //   };
-  //   await API.graphql({
-  //     query: updateNoteMutation,
-  //     variables: { input: data },
-  //   });
-  //   fetchNotes();
-  //   event.target.reset();
-  // }
 
   return(
     <View className="App">
@@ -110,6 +97,9 @@ const App = ({ signOut }) => {
             required
           />
           <View
+            border="1px solid var(--amplify-colors-black)"
+            borderRadius="20px"
+            color="var(--amplify-colors-blue-60)"
             name="image"
             as="input"
             type="file"
@@ -120,35 +110,58 @@ const App = ({ signOut }) => {
           </Button>
         </Flex>
       </View>
-      <Heading level={2}>Current Notes</Heading>
-      <View margin="3rem 0">
+      <Heading 
+        level={2}
+        paddingBottom="15px"
+        color="green.100"
+      >Current Notes</Heading>
+      <Flex 
+        notes={notes}
+        type="list"
+        direction="row"
+        gap="20px"
+        wrap="nowrap"
+        justifyContent="center"
+      >
         {notes.map((note) =>(
-          <Flex
+          <Card
             key={note.id || note.name}
-            direction="row"
-            justifyContent="center"
-            alignItems="center"
+            borderRadius="25px"
+            backgroundColor="blue.10"
+            maxWidth="22rem"
+            variation="outlined"
+            maxHeight="25rem"
           >
-            <Text as="strong" fontWeight={700}>
-              {note.name}
-            </Text>
-            <Text as="span">{note.description}</Text>
-            {note.image && (
-              <Image
-                src={note.image}
-                alt={`visual aid for ${notes.name}`}
-                style={{ width: 400 }}    
-              />
-            )}
-            <Button variation="link" onClick={() => deleteNote(note)}>
+            <View>
+              <Text as="strong" fontWeight={700}>
+                {note.name}
+              </Text>
+              <Divider orientation="row"/>
+              <Text as="span">{note.description}</Text>
+            </View>
+            <Card>
+              {note.image && (
+                <Image
+                  src={note.image}
+                  alt={`visual aid for ${notes.name}`}
+                  style={{ width: 100 }}
+                  objectPosition="50% 50%"   
+                />
+              )}
+            </Card>
+            <Divider padding="relative.xxxs" />
+            <Button 
+              variation="link" 
+              onClick={() => deleteNote(note)}
+              border="2px solid black"
+              padding="4px 4px"
+             >
               Delete Note
             </Button>
-            {/* <Button variation="link" onClick={() => updateNote(note)}>
-              Update Note
-            </Button> */}
-          </Flex>
+          </Card>
         ))}
-      </View>
+      </Flex>
+      <Divider orientation="column" paddingTop="100px" />
       <Button onClick={signOut}>Sign Out</Button>
     </View>
   );
