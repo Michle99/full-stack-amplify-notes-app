@@ -14,7 +14,7 @@ import {
   // Text,
   Divider,
   Card,
-  // useTheme
+  useTheme
 } from "@aws-amplify/ui-react";
 // import { listNotes } from "./graphql/queries";
 // import {
@@ -24,9 +24,10 @@ import {
 import logo from "./logo.svg"
 
 const App = ({ signOut }) => {
+  const { tokens } = useTheme();
   /** 
   const [notes, setNotes] = useState([]);
-  const { tokens } = useTheme();
+ 
 
   useEffect(() => {
     fetchNotes();
@@ -78,7 +79,9 @@ const App = ({ signOut }) => {
 
  */
   return(
-    <View className="App">
+    <View 
+      className="App"
+    >
       {/** 
       <View as="form" margin="3rem 0" onSubmit={createNote}>
         <Flex direction="row" justifyContent="center">
@@ -165,7 +168,7 @@ const App = ({ signOut }) => {
         ))}
       </Flex>
       */}
-      <Card >
+      <Card variation="elevated">
        <Heading level={1}>My Notes App</Heading>
         <Image src={logo} className="App-logo" alt="logo"/>
       </Card>
