@@ -2,37 +2,81 @@
 import React, { useState, useEffect } from "react";
 import "@aws-amplify/ui-react/styles.css";
 import './App.css';
-// import { API, Storage } from "aws-amplify";
+import { generateClient } from "aws-amplify/api";
 import {
   withAuthenticator,
   Button,
   Heading,
-  // Flex,
+  Flex,
   Image,
   View,
-  // TextField,
-  // Text,
+  TextField,
+  Text,
   Divider,
   Card,
-  useTheme
+  // useTheme
 } from "@aws-amplify/ui-react";
-// import { listNotes } from "./graphql/queries";
-// import {
-//   createNote as createNoteMutation,
-//   deleteNote as deleteNoteMutation,
-// } from "./graphql/mutations";
-import logo from "./logo.svg"
+import { listNotes } from "./graphql/queries";
+import {
+  createNote as createNoteMutation,
+  deleteNote as deleteNoteMutation,
+} from "./graphql/mutations";
+// import logo from "./logo.svg"
 
 const App = ({ signOut }) => {
-  const { tokens } = useTheme();
-  /** 
+  // const { tokens } = useTheme();
   const [notes, setNotes] = useState([]);
+  const client = generateClient();
  
 
   useEffect(() => {
     fetchNotes();
   }, []);
 
+  const fetchNotes = async () => {
+    try {
+      const apiResponse = await client.graphql({ query: listNotes });
+      const fetchedNotes = apiResponse.data.listNotes.items;
+      setNotes(fetchedNotes);
+    } catch (error) {
+      console.error("Error fetching notes: ", error);
+    }
+  };
+
+  const createNote = async (event) => {
+    event.preventDefault();
+    const form = event.target;
+    const name = form.elements.name.value;
+    const description = form.elements.description.value;
+
+    try {
+      const apiResponse = await client.graphql({
+        query: createNoteMutation,
+        variables: { input: { name, description } },
+      });
+      const newNote = apiResponse.data.createNote;
+      setNotes([...notes, newNote]);
+      form.reset();
+    } catch (error) {
+      console.error("Error creating note: ", error);
+    }
+  };
+
+  const deleteNote = async (noteId) => {
+    try {
+      await client.graphql({
+        query: deleteNoteMutation,
+        variables: { input: { id: noteId } },
+      });
+      setNotes(notes.filter((note) => note.id !== noteId));
+    } catch (error) {
+      console.error("Error deleting note: ", error);
+    }
+  };
+
+ 
+
+ /** 
   async function fetchNotes() {
     const apiData = await API.graphql({ query: listNotes });
     const notesFromAPI = apiData.data.listNotes.items;
@@ -66,6 +110,7 @@ const App = ({ signOut }) => {
     fetchNotes();
     event.target.reset();
   }
+  
 
   async function deleteNote({ id, name }) {
     const newNotes = notes.filter((note) => note.id !== id);
@@ -76,13 +121,14 @@ const App = ({ signOut }) => {
       variables: { input: { id } },
     });
   }
+ **/
 
- */
+
   return(
     <View 
       className="App"
     >
-      {/** 
+      <Heading level={1}>My Notes App</Heading>
       <View as="form" margin="3rem 0" onSubmit={createNote}>
         <Flex direction="row" justifyContent="center">
           
@@ -102,7 +148,7 @@ const App = ({ signOut }) => {
             variation="quiet"
             required
           />
-          <View
+          {/* <View
             border="1px solid var(--amplify-colors-black)"
             borderRadius="20px"
             color="var(--amplify-colors-blue-60)"
@@ -110,7 +156,7 @@ const App = ({ signOut }) => {
             as="input"
             type="file"
             style={{ alignSelf: "start" }}
-          />
+          /> */}
           <Button type="submit" variation="primary">
             Create Note
           </Button>
@@ -120,7 +166,9 @@ const App = ({ signOut }) => {
         level={2}
         paddingBottom="15px"
         color="green.100"
-      >Current Notes</Heading>
+      >
+        Current Notes
+      </Heading>
       <Flex 
         notes={notes}
         type="list"
@@ -145,7 +193,7 @@ const App = ({ signOut }) => {
               <Divider orientation="row"/>
               <Text as="span">{note.description}</Text>
             </View>
-            <Card>
+            {/* <Card>
               {note.image && (
                 <Image
                   src={note.image}
@@ -154,11 +202,11 @@ const App = ({ signOut }) => {
                   objectPosition="50% 50%"   
                 />
               )}
-            </Card>
+            </Card> */}
             <Divider padding="relative.xxxs" />
             <Button 
               variation="link" 
-              onClick={() => deleteNote(note)}
+              onClick={() => deleteNote(note.id)}
               border="2px solid black"
               padding="4px 4px"
              >
@@ -167,11 +215,6 @@ const App = ({ signOut }) => {
           </Card>
         ))}
       </Flex>
-      */}
-      <Card variation="elevated">
-       <Heading level={1}>My Notes App</Heading>
-        <Image src={logo} className="App-logo" alt="logo"/>
-      </Card>
       <Divider orientation="column" paddingTop="100px" />
       <Button onClick={signOut}>Sign Out</Button>
     </View>
