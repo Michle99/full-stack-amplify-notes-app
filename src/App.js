@@ -1,28 +1,30 @@
-/** 
+
 import React, { useState, useEffect } from "react";
 import "@aws-amplify/ui-react/styles.css";
 import './App.css';
-import { API, Storage } from "aws-amplify";
+// import { API, Storage } from "aws-amplify";
 import {
   withAuthenticator,
   Button,
   Heading,
-  Flex,
+  // Flex,
   Image,
   View,
-  TextField,
-  Text,
+  // TextField,
+  // Text,
   Divider,
   Card,
-  useTheme
+  // useTheme
 } from "@aws-amplify/ui-react";
-import { listNotes } from "./graphql/queries";
-import {
-  createNote as createNoteMutation,
-  deleteNote as deleteNoteMutation,
-} from "./graphql/mutations";
+// import { listNotes } from "./graphql/queries";
+// import {
+//   createNote as createNoteMutation,
+//   deleteNote as deleteNoteMutation,
+// } from "./graphql/mutations";
+import logo from "./logo.svg"
 
 const App = ({ signOut }) => {
+  /** 
   const [notes, setNotes] = useState([]);
   const { tokens } = useTheme();
 
@@ -74,10 +76,11 @@ const App = ({ signOut }) => {
     });
   }
 
-
+ */
   return(
     <View className="App">
       <Heading level={1}>My Notes App</Heading>
+      {/** 
       <View as="form" margin="3rem 0" onSubmit={createNote}>
         <Flex direction="row" justifyContent="center">
           
@@ -162,6 +165,10 @@ const App = ({ signOut }) => {
           </Card>
         ))}
       </Flex>
+      */}
+      <Card>
+        <Image src={logo} className="App-logo" alt="logo"/>
+      </Card>
       <Divider orientation="column" paddingTop="100px" />
       <Button onClick={signOut}>Sign Out</Button>
     </View>
@@ -169,23 +176,3 @@ const App = ({ signOut }) => {
 }
 
 export default withAuthenticator(App);
-
-**/
-
-
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
-
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <h1>Hello from V2</h1>
-      </header>
-    </div>
-  );
-}
-
-export default App;
