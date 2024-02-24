@@ -1,0 +1,14 @@
+{
+  "resourceName": "imagestore",
+  "policyUUID": "40547553",
+  "bucketName": "fullstackamplifynoted748e34ead8c482fad6a1ce6df8",
+  "storageAccess": "auth",
+  "guestAccess": [],
+  "authAccess": [
+    "CREATE_AND_UPDATE",
+    "READ",
+    "DELETE"
+  ],
+  "triggerFunction": "NONE",
+  "groupAccess": {}
+}

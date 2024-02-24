@@ -126,12 +126,12 @@ const App = ({ signOut }) => {
 
   return(
     <View 
-      className="App"
+      textAlign="center"
+      margin="2rem 0"
     >
       <Heading level={1}>My Notes App</Heading>
       <View as="form" margin="3rem 0" onSubmit={createNote}>
         <Flex direction="row" justifyContent="center">
-          
           <TextField
             name="name"
             placeholder="Note name"
@@ -174,7 +174,7 @@ const App = ({ signOut }) => {
         type="list"
         direction="row"
         gap="20px"
-        wrap="nowrap"
+        wrap="wrap"
         justifyContent="center"
       >
         {notes.map((note) =>(
