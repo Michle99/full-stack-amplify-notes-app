@@ -81,7 +81,7 @@ const App = ({ signOut }) => {
       textAlign="center"
       margin="2rem 0"
     >
-      <Heading level={1}>My Notes App</Heading>
+      <Heading fontSize={80} level={6}>Notes App</Heading>
       <View as="form" margin="3rem 0" onSubmit={createNote}>
         <Flex direction="row" justifyContent="center">
           <TextField
@@ -134,7 +134,7 @@ const App = ({ signOut }) => {
             key={note.id || note.name}
             borderRadius="25px"
             backgroundColor="blue.10"
-            maxWidth="22rem"
+            width="18.75rem"
             variation="outlined"
             minHeight="5rem"
             height="auto"
@@ -157,7 +157,7 @@ const App = ({ signOut }) => {
                 <Image
                   src={note.image}
                   alt={`visual aid for ${notes.name}`}
-                  style={{ width: "100%", height: 'auto'  }}
+                  style={{ maxWidth: "100%", maxHeight: '200px'  }}
                   objectPosition="50% 50%"   
                 />
               )}
