@@ -4,7 +4,11 @@
 
 A simple full-stack web notes application using AWS Amplify. In the first module, you will  a The React Notes application was built and hosted on AWS. The Local app was initialized, authentication, GraphQL APIs, database (AWS S3), and updates to store images on the app was add via AWS CLI.
 
-## Screenshot
+## Screenshots
+
+<img src="./public/create_account.png"  width="80%" alt="mountain screenshot"/>
+
+<img src="./public/sign_in.png"  width="80%" alt="mountain screenshot"/>
 
 <img src="./public/screenshots.png"  width="80%" alt="mountain screenshot"/>
 
